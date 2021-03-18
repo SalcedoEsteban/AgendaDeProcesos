@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class=" py-4 text-center">
+		<div class="col-sm-6 text-center">
+			<div class="card text-center">
+				<div class="card-body">
+					<h5 class="card-title" th:text="${titulo}"></h5>
+					<!-- <p class="card-text">With supporting text below as a natural
+							lead-in to additional content.</p> -->
+					<form th:action="@{/guardarEntradaUsuario/} + ${usuario.id}"
+						method="post">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Usuario</label>
+							<div class="col-sm-8">
+								<input th:value="${usuario.username}" disabled="disabled"
+									class="form-control">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Nombre</label>
+							<div class="col-sm-8">
+								<input th:value="${usuario.nombre}" disabled="disabled"
+									class="form-control">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Apellido</label>
+							<div class="col-sm-8">
+								<input th:value="${usuario.apellido}" disabled="disabled"
+									class="form-control">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Fecha ingreso</label>
+							<div class="col-sm-8">
+								<input type="date" name="fechaIngreso" id="fechaIngreso"
+									class="form-control" autocomplete="off" required>
+							</div>
+						</div>
+					<div class="form-group row">
+						<label for="especialidad" class="col-form-label col-sm-4">Especialidad</label>
+						<div class="col-sm-8">
+							<select onchange="javascript:cargarSelectJuzgados()" id="especialidad" name="especialidad" class="form-control">
+								<option value=''>----------seleccionar especialidad------------</option>
+								<option th:each="especialidad : ${especialidades}" th:value="${especialidad.id}" th:text="${especialidad.nombre}"></option>
+							</select>
+						</div>
+					</div>
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Juzgado</label>
+							<div class="col-sm-8 ">
+								<select name="idJuzgado" id="idJuzgado" class="form-control" required>
+									<option th:each="juzgado : ${juzgados}" th:value="${juzgado.id}" th:text="${juzgado.nombre}"></option>
+								</select>
+							</div>
+						</div>
+						<input onclick="return confirm('¿Guardar entrada usuario?')" type="submit" value="Guardar" class="btn btn-success">
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

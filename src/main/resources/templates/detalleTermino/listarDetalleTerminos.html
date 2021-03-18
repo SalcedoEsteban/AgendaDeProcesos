@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"> </header>
+	
+	<div class="container py-4">
+		 <div class="card bg-light">
+		 	<div class="card-header" th:text="${titulo}"></div>
+		 	<div class="card-body">
+		 		<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/listarProcesos}"
+						class="btn btn-success btn-xs">Volver al inicio</a>
+		 		<table class="table table-striped table-bordered">
+		 			<thead class="thead-dark">
+		 				<tr>
+		 					<th></th>
+		 					<th></th>
+		 					<th></th>
+		 				</tr>
+		 			</thead>
+		 		</table>
+		 	</div>
+		 </div>
+	</div>
+	
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

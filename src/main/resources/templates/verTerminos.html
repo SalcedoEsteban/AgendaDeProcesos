@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+<header th:replace="layout/layout :: header">
+</header>
+
+	<div class="container">
+		<div class="card bg-light">
+			<div class="card-header text-center" th:text="${titulo}"></div>
+			<div class="card-body">
+				<h4>
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+					<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/listarProcesos}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+					<a title="Crear Termino a proceso" th:href="@{'/crearDetalleTermino/' + ${proceso.id}}"
+								class="btn btn-primary btn-xs"><img alt=""
+									src="/icons/bell-fill.svg"></a>
+				</h4>
+				<div class="alert alert-info my-4" th:if="${#lists.isEmpty(proceso.detalleTerminos)}">No hay Terminos asignados para el proceso</div>
+				<table th:if="${not #lists.isEmpty(proceso.detalleTerminos)}" class="table table-striped table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<!-- <th>Id</th> -->
+							<th>Nombre</th>
+							<th>Fecha Inicial</th>
+							<th>Fecha Final</th>
+							<!-- <th>¿Días hábiles?</th>  -->
+							<th>Observación</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="detalleTermino: ${proceso.detalleTerminos}">
+							<!-- <td th:text="${detalleTermino.id}"></td>  -->
+							<td th:text="${detalleTermino.termino.nombre}">
+							<!-- <td th:text="${detalleTermino.diasHabiles}"></td>  -->
+							<td th:text="${#dates.format(detalleTermino.fechaInicial, 'dd-MM-yyyy')}"></td>
+							<td th:text="${#dates.format(detalleTermino.fechaFinal, 'dd-MM-yyyy')}"></td>
+							<!--  <td th:if="${detalleTermino.diasHabiles} == true" th:text="Sí"></td>
+							<td th:if="${detalleTermino.diasHabiles} == false" th:text="No"></td> -->
+							<td th:text="${detalleTermino.observacion == null ? 'No registra' : detalleTermino.observacion}">
+							<td><a th:href="@{/editarDetalleTermino/} + ${detalleTermino.id}"
+								class="btn btn-primary btn-xs">Editar</a></td>
+							<td><a th:href="@{/eliminarDetalleTermino/} + ${detalleTermino.id}"
+								class="btn btn-danger btn-xs" id="botonEliminar"
+								onclick="return confirm('¿Eliminar Elemento?')">Eliminar</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

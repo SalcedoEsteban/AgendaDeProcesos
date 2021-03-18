@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="py-2 ">
+		
+			<div class="col-sm-6 text-center">
+				<div class="card text-center">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${titulo}"></h5>
+						<!-- <p class="card-text">With supporting text below as a natural
+							lead-in to additional content.</p> -->
+						<form th:action="@{/guardarSalidaUsuario/} + ${usuario.id}" method="post">
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label">Usuario</label>
+								<div class="col-sm-8">
+									<input th:value="${usuario.username}" disabled="disabled" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label">Nombre</label>
+								<div class="col-sm-8">
+									<input th:value="${usuario.nombre}" disabled="disabled" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label">Apellido</label>
+								<div class="col-sm-8">
+									<input th:value="${usuario.apellido}" disabled="disabled" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label">Fecha ingreso</label>
+								<div class="col-sm-8">
+									<input th:value="${#dates.format(fechaIngreso, 'dd-MM-yyyy')}" disabled="disabled" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label">Fecha Salida</label>
+								<div class="col-sm-8">
+									<input type="date" name="fechaSalida" id="fechaSalida" class="form-control" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label">Juzgado</label>
+								<div class="col-sm-8">
+									<input th:value="${usuario.juzgado.nombre}" disabled="disabled" class="form-control">
+								</div>
+							</div>
+							<input onclick="return confirm('¿Guardar salida usuario?')" type="submit" value="Guardar" class="btn btn-success">
+						</form>
+						
+					</div>
+				</div>
+			</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

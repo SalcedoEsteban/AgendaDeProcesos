@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	
+	<div class="container">
+		<div class="card bg-light">
+			<div class="card-header text-center" th:text="${titulo}"></div>
+			<div class="card-body">
+				<h4>
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+					<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+				</h4>
+				<!-- <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>  -->
+				<form th:action="@{/guardarUsuario}" th:object="${usuario}" method="post">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Email</label>
+						<div class="col-sm-5">
+							<input type="email" placeholder="ejemplo@correo.com" th:field="*{username}" class="form-control"/>
+							<div th:if="${#fields.hasErrors('username')}" class="alert alert-danger" th:errors="*{username}"></div>
+						</div>
+						
+					</div>
+					<div class="form-group row">
+					<!-- <div th:if="${actualizarPassword == false}" class="form-group row"> -->
+						<label class="col-form-label col-sm-2">Contraseña</label>
+						<div class="col-sm-5">
+							<input type="password" th:field="*{password}" class="form-control"/>
+							<div th:if="${#fields.hasErrors('password')}" class="alert alert-danger" th:errors="*{password}"></div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Nombre</label>
+						<div class="col-sm-5">
+							<input type="text" th:field="*{nombre}" class="form-control"/>
+							<div th:if="${#fields.hasErrors('nombre')}" class="alert alert-danger" th:errors="*{nombre}"></div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Apellido</label>
+						<div class="col-sm-5">
+							<input type="text" th:field="*{apellido}" class="form-control">
+							<div th:if="${#fields.hasErrors('apellido')}" class="alert alert-danger" th:errors="*{apellido}"></div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Cargo</label>
+						<div class="col-sm-5">
+							<input type="text" th:field="*{cargo}" class="form-control">
+							<div th:if="${#fields.hasErrors('cargo')}" class="alert alert-danger" th:errors="*{cargo}"></div>
+						</div>
+					</div>
+					<!-- <div class="form-group row">
+					 		<label class="col-sm-3 col-form-label">Rol(es)</label>
+					 		<div class="custom-control custom-checkbox">
+					 			<div th:each="rol: ${roles}">
+					 				<input type="checkbox" th:field="*{roles}" th:value="${rol}" class="custom-control-input">
+					 				<label th:for="${#ids.prev('roles')}" th:text="${rol}" class="custom-control-label"></label>
+					 				<div th:if="${#fields.hasErrors('roles')}" class="alert alert-danger" th:errors="*{roles}"></div>
+					 			</div>
+					 			
+					 		</div>
+					 </div>-->
+					<div sec:authorize="hasRole('ROLE_SUPER_ADMIN')" class="form-group row">
+						<label for="especialidad" class="col-form-label col-sm-2">Especialidad</label>
+						<div class="col-sm-5">
+							<select onchange="javascript:cargarSelectJuzgados()" id="especialidad" name="especialidad" class="form-control">
+								<option value=''>----------seleccionar especialidad------------</option>
+								<option th:each="especialidad : ${especialidades}" th:value="${especialidad.id}" th:text="${especialidad.nombre}"></option>
+							</select>
+						</div>
+					</div>
+					<div sec:authorize="hasRole('ROLE_SUPER_ADMIN')" class="form-group row">
+						<label for="juzgado" class="col-form-label col-sm-2">Juzgado</label>
+						<div class="col-sm-5">
+							<select id="juzgado" name="juzgado" th:field="*{juzgado}" class="form-control" required>
+								<!-- <option value="">----------seleccionar------------</option> -->
+								<option th:each="juzgado : ${juzgados}" th:value="${juzgado.id}" th:text="${juzgado.nombre}"></option>
+							</select>
+						</div>
+					</div>
+					<!--  <div class="form-group row">
+						<label class="col-form-label col-sm-2">Habilitado</label>
+						<div class="col-sm-6">
+							<select th:field="*{enabled}" class="form-control">
+								<option th:value="">----------------Seleccionar--------------</option>
+								<option th:value="true" th:text="Sí"></option>
+								<option th:value="false" th:text="NO"></option>
+							</select>
+						</div>
+					</div> -->
+					<div class="form-group">
+						<input type="submit" value="Guardar" class="btn btn-success">
+					</div>
+				</form>
+				
+			</div>
+		</div>
+	</div>
+	
+	 <footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

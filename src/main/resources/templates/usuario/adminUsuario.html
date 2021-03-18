@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container">
+		<div class="card bg-light ">
+			<div class="card-header text-center"><h3>Administrar Usuario</h3></div>
+			<div class="card-body text-center">
+				<h4 class="text-left">
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+						<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+				</h4>
+				<!-- <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/listarProcesos}"
+						class="btn btn-success btn-xs">Volver al inicio</a> -->
+				<a th:href="@{/salidaUsuario/} + ${usuario.id}" class="btn btn-warning">Salida Usuario</a>
+				<a th:href="@{/entradaUsuario/} + ${usuario.id}" class="btn btn-primary">Entrada Usuario</a>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

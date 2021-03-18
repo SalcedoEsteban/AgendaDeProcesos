@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="card">
+		<!-- <div class="alert alert-danger" th:if="${vence == null}"
+			th:text="${'es null'}"></div>  -->
+		<div class="alert alert-danger alert-dismissible"
+			th:if="${!procesosAVencer.isEmpty()}">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<div class="card bg-danger text-white">
+				<div class="card-header text-center">
+					<h3>Perdida de Competencia 121 C.G.P</h3>
+				</div>
+				<div class="card-body">
+					<h5 class="card-title text-center" th:text="${vence}"></h5>
+					<table class="table table-striped table-bordered text-center">
+						<thead class="thead-dark">
+							<tr>
+								<th>Radicado</th>
+								<th>Ver</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="proceso: ${procesosAVencer}">
+								<td th:text="${proceso.radicado}"></td>
+								<td><a th:href="@{/verDetalleProceso/} + ${proceso.id}"
+									class="btn btn-warning btn-xs" th:text="${proceso.id}"></a></td>
+							</tr>
+						</tbody>
+					</table>
+					<nav th:replace="paginator-nav"></nav>
+				</div>
+			</div>
+		</div>
+		<div class="alert alert-danger alert-dismissible"
+			th:if="${!procesosAdmitir.isEmpty()}">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h5 class="text-center">Procesos a admitir</h5>
+			<table class="table table-bordered table-striped text-center">
+				<thead class="thead-dark">
+					<tr>
+						<th>Radicado</th>
+						<th>Ver</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${proceso.ultimaActuacion == ''}"
+						th:each="proceso: ${procesosAdmitir}">
+						<td th:text="${proceso.radicado}"></td>
+						<td><a th:href="@{/verDetalleProceso/} + ${proceso.id}"
+							class="btn btn-warning" th:text="${proceso.id}"></a></td>
+					</tr>
+				</tbody>
+			</table>
+			<nav th:replace="paginator-nav"></nav>
+		</div>
+		<!-- <div class="alert alert-info my-4" th:if="${#lists.isEmpty(proceso.detalleTerminos)}">No hay Terminos asignados para el proceso</div> -->
+		<!-- <div class="card bg-light" style="width: 82rem;">  -->
+		<div class="card bg-light">
+			<div class="card-header tex-center">
+				<h3 th:text="${titulo}" class="text-center"></h3>
+			</div>
+			<div class="card-body">
+				<h4 class="card-title">
+					<a sec:authorize="hasRole('ROLE_ADMIN')" title="Crear Proceso" th:href="@{/formProceso}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/plus.svg"></a>
+					<!-- <a sec:authorize="hasRole('ROLE_ADMIN')" title="Agregar días Calendario"
+						th:href="@{/formAgregarDiasCalendario}" class="btn btn-primary btn-xs"><img alt="" src="/icons/calendar-fill.svg"></a>
+					<a sec:authorize="hasRole('ROLE_ADMIN')" title="Agregar días Hábiles"
+						th:href="@{/formAgregarDiasHabiles}" class="btn btn-primary btn-xs"><img alt="" src="/icons/calendar.svg"></a>-->
+					<a th:if="${botonBandera != null and botonBandera == true}" sec:authorize="hasRole('ROLE_ADMIN')"
+						th:href="@{/formAsignarProcesos}" class="btn btn-primary btn-xs">Asignar Procesos</a>
+				</h4>
+				<form th:action="@{/buscarProceso}" method="get">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" th:text="'Buscar Proceso'"></label>
+						<input type="text" placeholder="Buscar por radicado"
+							name="radicado" id="radicado" class="form-control col-sm-3">
+						<button class="btn btn-success col-sm-1" type="submit">Buscar</button>
+
+					</div>
+				</form>
+				<form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/listarProcesosPorUsuario}" method="post">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Buscar por usuario</label>
+						<select class="form-control col-sm-3" name="idUsuario" id="idUsuario">
+							<option th:each="usuario: ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}">
+							</option>
+						</select>
+						<button class="btn btn-success col-sm-1" type="submit">Buscar</button>
+					</div>
+				</form>
+				<!-- <div class="form-group row">
+					<label for="buscar_proceso" class="col-sm-2 col-form-label"
+						th:text="'Buscar Proceso'"></label>
+					<input type="text" name="buscar_proceso" id="buscar_proceso" class="form-control col-sm-6">
+					<h3><a th:href="@{'/buscarProceso/' + ${radicado}}"></a></h3>  
+				</div>  -->
+				<div th:if="${procesos.isEmpty()}" class="alert alert-info my-4" th:text="'No hay procesos en el juzgado'"></div>
+				<table th:if="${!procesos.isEmpty()}" class="table table-bordered">
+					<thead class="thead-dark">
+						<tr>
+
+							<th>Radicado</th>
+							<th>Demandante</th>
+							<th>Demandado</th>
+							<th>Fecha reparto</th>
+							<!-- <th>Ultima Actuacion</th>  -->
+							<!-- <th>Estado Actual</th>  -->
+							<!-- <th>Estado</th>  -->
+							<!-- <th>Ver<br>Detalle</th> 
+							<th>Ver <br> Terminos</th>
+							<th>Crear<br>Termino</th>
+							<th>Editar</th>
+							<th>Eliminar</th> -->
+							<th>Det.</th>
+							<th colspan="4"></th>
+							<!--  <th></th>
+							<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+							<th sec:authorize="hasRole('ROLE_ADMIN')"></th> -->
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="proceso: ${procesos}"
+							th:classappend="|${proceso.proceso.prioritario == true ? 'table-danger' : 'table-success'}  
+							${proceso.proceso.estadoActual == 'Por subsanar demanda' ? 'table-warning' : 'table-success'}|">
+						<!-- otra forma de establecer un color a un registro  
+						<tr th:each="proceso: ${procesos}"
+						 th:class="${proceso.proceso.prioritario == true} ? table-danger : table-success "></tr>-->
+
+							<td th:text="${proceso.proceso.radicado}"></td>
+							<td th:text="${proceso.proceso.demandante}"></td>
+							<td th:text="${proceso.proceso.demandado.isEmpty() ? 'No registra' : proceso.proceso.demandado}"></td>
+							<td
+								th:text="${#dates.format(proceso.proceso.fechaReparto, 'dd-MM-yyyy')}"></td>
+							<td title="Ver detalles del proceso"><a
+								th:href="@{'/verDetalleProceso/' + ${proceso.proceso.id}}"
+								th:text="${proceso.proceso.id}" class="btn btn-primary btn-xs"></a></td>
+							<!-- <td th:text="${proceso.ultimaActuacion}"></td>  -->
+							<!-- <td th:text="${proceso.estadoActual}"></td>  -->
+							<!-- <td th:text="${proceso.estado}"></td>  -->
+							<td title="Ver los terminos del proceso"><a
+								th:href="@{/verDetalleTerminosProceso/} + ${proceso.proceso.id}"
+								class="btn btn-primary btn-xs"><img alt=""
+									src="/icons/search.svg"></a></td>
+							<td title="Crear Termino a proceso"><a
+								th:href="@{'/crearDetalleTermino/' + ${proceso.proceso.id}}"
+								class="btn btn-primary btn-xs"><img alt=""
+									src="/icons/bell-fill.svg"></a></td>
+							<td title="Editar proceso" sec:authorize="hasRole('ROLE_ADMIN')"><a
+								th:href="@{/editarProceso/} + ${proceso.proceso.id}"
+								class="btn btn-primary btn-xs"><img alt=""
+									src="/icons/pencil.svg"></a></td>
+							<td title="Eliminar proceso" sec:authorize="hasRole('ROLE_ADMIN')"><a
+								th:href="@{/eliminarProceso/} + ${proceso.proceso.id}"
+								class="btn btn-danger btn-xs" id="botonEliminar"
+								onclick="return confirm('¿Eliminar elemento?')"><img alt=""
+									src="/icons/x-square-fill.svg"></a></td>
+						</tr>
+					</tbody>
+				</table>
+				<nav th:replace="paginator-nav"></nav>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

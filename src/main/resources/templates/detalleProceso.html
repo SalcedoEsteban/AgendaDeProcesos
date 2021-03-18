@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"> </header>
+	<div class="card">
+		<div class="card bg-light">
+			<div class="card-header text-center" th:text="${titulo}"></div>
+			<div class="card-body">
+				<div class="py-3">
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+					<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/listarProcesos}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/formProceso}" class="btn btn-success btn-xs">Crear
+						Proceso</a>
+					<a title="Limpiar Proceso" sec:authorize="hasRole('ROLE_USER')" th:href="@{/limpiarProceso/} + ${proceso.id}" class="btn btn-info btn-xs"
+					onclick="return confirm('¿Limpiar proceso?')"><img alt="" src="/icons/three-dots.svg"></a>
+				</div>
+				<h4 class="card-title text-center">
+					
+					<!-- <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/verAlarmasProceso/} + ${proceso.id}" class="btn btn-primary btn-xs">
+					Ver alarmas</a>  -->
+					<a th:if="${proceso.estado == true}" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/adminEstadoProceso/} + ${proceso.id}" class="btn btn-warning btn-xs"
+					onclick="return confirm('¿Desactivar proceso?')">
+					Desactivar Proceso</a>
+					<a th:if="${proceso.estado == false}"sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/adminEstadoProceso/} + ${proceso.id}" class="btn btn-success btn-xs">
+					Activar Proceso</a>
+					<a th:if="${proceso.estadoActual == 'Por admitir'}" sec:authorize="hasRole('ROLE_USER')" th:href="@{/admitirProceso/} + ${proceso.id}" class="btn btn-success btn-xs"
+					onclick="return confirm('¿Admitir proceso?')">
+					Admitir Proceso</a>
+					<a th:if="${terminoAdmision == true}" sec:authorize="hasRole('ROLE_USER')" th:href="@{/inadmitirProceso/} + ${proceso.id}" class="btn btn-danger btn-xs"
+					onclick="return confirm('¿Inadmitir proceso?')">
+					Inadmitir Proceso</a>
+					<a th:if="${proceso.prorroga == true}" sec:authorize="hasRole('ROLE_USER')" th:href="@{/agregarProrroga/} + ${proceso.id}" class="btn btn-primary btn-xs"
+					onclick="return confirm('¿Agregar prorroga?')">
+					Agregar Prorroga</a>
+					<a th:if="${proceso.estadoActual == 'Por subsanar demanda'}" sec:authorize="hasRole('ROLE_USER')" th:href="@{/subsanarDemanda/} + ${proceso.id}" class="btn btn-success btn-xs"
+					onclick="return confirm('¿Subsanar demanda?')">
+					Subsanar demanda</a>
+					
+				</h4>
+					<div class="card-header text-center">
+						<h3 th:if="${proceso.ultimaActuacion == 'admitido'}" class="bg-success">Proceso Admitido</h3>
+						<h3 th:if="${proceso.actuacionUltima == 'Termino 121'}" class="bg-warning">Proceso Vencido</h3>
+					</div>
+					<div class="card-header text-center">
+						<!-- <form th:if="${proceso.sentenciaBandera == true}" sec:authorize="hasRole('ROLE_ADMIN')"  th:action="@{/dictarSentencia/} + ${proceso.id}" method="post">
+							<div class="form-group row">
+								
+								<div class="col-sm-1">
+									<label class=" col-form-label">Sentencia:</label>
+								</div>							
+								<input type="text" class="form-control col-sm-3" name="sentencia" id="sentencia">
+								<div class="col-sm-1">-->
+								<a sec:authorize="hasRole('ROLE_USER')" th:if="${proceso.sentenciaBandera == true}"  th:href="@{/dictarSentencia/} + ${proceso.id}" class="btn btn-primary btn-xs"
+								onclick="return confirm('¿Dictar sentencia al proceso?')">
+								Dictar Sentencia</a>
+								 <!-- </div> 
+							</div>
+						</form>--->
+					</div>
+				<div class="form-group row py-2">
+					
+					<!-- <label class="col-sm-3 col-form-label" th:text="'Usuario: '"></label>
+					<input th:value="${proceso.proceso.usuario.nombre}" disabled="disabled" class="form-control col-sm-3"/> -->
+					
+					<label class="col-sm-3 col-form-label" th:text="'Asignado a: '"></label>
+					<input th:value="${nombreUsuario} + ' ' + ${apellidoUsuario}" disabled="disabled" class="form-control col-sm-3"/>
+					
+					<!-- <label class="col-sm-3 col-form-label" th:text="'Tipo Proceso: '"></label>
+					<input th:value="${proceso.tipoProceso.nombre}" disabled="disabled" class="form-control col-sm-3"/>  -->
+					
+					<label class="col-sm-3 col-form-label" th:text="'Creado el: '"></label>
+					<input th:value="${#dates.format(proceso.createAt, 'dd-MM-yyyy')}" disabled="disabled" class="form-control col-sm-3"/>
+			
+					<label class="col-sm-3 col-form-label" th:text="'Radicado: '"></label>	
+					<input th:value="${proceso.radicado}" disabled="disabled" class="col-sm-3 form-control"/>
+						
+					<label class="col-sm-3 col-form-label" th:text="'Demandante: '"></label>
+					<input th:value="${proceso.demandante}" disabled="disabled" class="col-sm-3 form-control"/>
+						
+					<label class="col-sm-3 col-form-label" th:text="'Demandandado: '"></label>
+					<input th:value="${proceso.demandado}" disabled="disabled" class="col-sm-3 form-control"/>
+						
+					<label class="col-sm-3 col-form-label" th:text="'Fecha Reparto: '"></label>
+					<input th:value="${#dates.format(proceso.fechaReparto, 'dd-MM-yyyy')}" disabled="disabled" class="col-sm-3 form-control"/>
+					
+					<label class="col-sm-3 col-form-label" th:text="'Obervación: '"></label>
+					<input th:value="${proceso.observacion}" disabled="disabled" class="col-sm-3 form-control"/>		
+				
+					<label class="col-sm-3 col-form-label" th:text="'Ultima Actuación: '"></label>
+					<input th:value="${proceso.actuacionUltima}" disabled="disabled" class="col-sm-3 form-control"/>
+						
+					<label class="col-sm-3 col-form-label" th:text="'Estado Actual: '"></label>
+					<input th:value="${proceso.actualEstado}" disabled="disabled" class="col-sm-3 form-control"/>
+					
+					<label class="col-sm-3 col-form-label" th:text="'Tipo Proceso: '"></label>
+					<input th:value="${tipoProceso}" disabled="disabled" class="col-sm-3 form-control"/>
+						
+					<label class="col-sm-3 col-form-label" th:text="'Juzgado: '"></label>
+					<input th:value="${juzgado}" disabled="disabled" class="col-sm-3 form-control"/>
+			
+					<label class="col-sm-3 col-form-label" th:text="'Activo: '"></label>
+					<input th:value="${proceso.estado == true} ? 'Sí' : 'No'" disabled="disabled" class="col-sm-3 form-control"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

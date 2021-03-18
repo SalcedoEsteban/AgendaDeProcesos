@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+		<div class="container">
+			<div class="card bg-light">
+				<div class="card-header" th:text="${titulo}"></div>
+				<div class="card-body">
+					<h4 class="card-title">
+						<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+						<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+						<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+					</h4>
+					<table class="table table-bordered table-striped text-center">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Descripción</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="alarma: ${alarmas}">
+								<td th:text="${alarma.id}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

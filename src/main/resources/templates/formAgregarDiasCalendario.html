@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container">
+		<div class="card bg-light">
+			<div class="card-header text-center" th:text="${titulo}"></div>
+			<div class="card-body">
+				<h4>
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+					<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/listarProcesos}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+				</h4>
+				<form th:action="@{/agregarDiasCalendario}" method="POST">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Numero de dias</label>
+						<input class="col-sm-3 form-control"  type="number" placeholder="Ingrese el numero de dias"
+						id="dias" name="dias" required>
+						<button type="submit" class="col-sm-1 btn btn-success"
+						onclick="return confirm('¿Agregar días?')">Agregar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

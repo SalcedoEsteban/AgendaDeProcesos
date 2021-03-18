@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout:: header"></header>
+	<div class="container">
+		<div class="card bg-light">
+			<div class="card-header text-center" th:text="${titulo}"></div>
+			<div class="card-body">
+				<form th:action="@{/especialidad/guardar}" th:object="${especialidad}" method="post">
+					<h4 class="card-title">
+						<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+							<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+						<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+					</h4>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Nombre</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" th:field="*{nombre}">
+							<div th:if="${#fields.hasErrors('nombre')}" class="alert alert-danger" th:errors="*{nombre}"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-success" value="Guardar">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

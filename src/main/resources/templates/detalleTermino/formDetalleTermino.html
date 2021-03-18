@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"> </header>
+	
+	<div class="container">
+		<div class="card bg-light">
+			<div class="card-header text-center" th:text="${titulo}"></div>
+			<div class="card-body">
+				<h4>
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+					<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/listarProcesos}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+				</h4>
+				<div th:object="${detalleTermino}" th:remove="tag">
+					<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+						<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+					</ul>
+				</div>
+				<form th:action="@{/guardarDetalleTermino}" th:object="${detalleTermino}" method="post">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Fecha Inicial</label>
+						<div class="col-sm-3 ">
+							<input id="fechaInicial" autocomplete="off" type="date" th:field="*{fechaInicial}" class="form-control" th:errorclass="'form-control alert-danger'"
+							placeholder=""/>
+							<small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('fechaInicial')}" th:errors="*{fechaInicial}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Fecha Final</label>
+						<div class="col-sm-3 ">
+							<input id="fechaFinal" autocomplete="off" type="date" th:field="*{fechaFinal}" class="form-control" th:errorclass="'form-control alert-danger'"/>
+							<small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}"></small>
+						</div>
+					</div>
+					<!-- <div class="form-group row">
+						<label class="col-sm-2 col-form-label">¿Días hábiles?</label>
+						<div class="col-sm-3">
+							<select th:field="*{diasHabiles}" class="form-control">
+								<option th:value="true" th:text="Si"></option>
+								<option th:value="false" th:text="No"></option>
+							</select>
+						</div>
+					</div>  -->
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Termino</label>
+						<div class="col-sm-3">
+							<select th:field="*{termino}" class="form-control">
+								<option th:each="termino: ${terminos}" th:value="${termino.id}" th:text="${termino.nombre}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Guardar" class="btn btn-success" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

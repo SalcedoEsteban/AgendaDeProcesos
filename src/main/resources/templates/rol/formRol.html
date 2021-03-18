@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+		
+		<div class="container">
+			<div class="card bg-light">
+				<div class="card-header text-center" th:text="${titulo}"></div>
+				<div class="card-body">
+					<h4 class="card-title">
+						<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+						<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+						<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>					
+					</h4>
+					<form th:action="@{/guardarRol}" method="get">
+					 	<!--  <div class="form-group row"> -->
+					 		<!-- <label class="col-sm-2 col-form-label">Rol</label>  -->
+					 		
+					 			<!-- <div th:each="rol: ${roles}">
+					 				<input type="checkbox" th:field="*{roles}" th:value="${rol.id}" class="form-control">
+					 				<label th:for="${#ids.prev('roles')}" th:text="${rol.nombre}" class="col-form-label"></label>
+					 			</div>  -->
+					 			
+					 			<!-- <select th:field="*{rol}" class="form-control">
+					 				<option value="">============Seleccionar ===========</option>
+					 				<option th:value="ROLE_USER" th:text="Usuario"></option>
+					 				<option th:value="ROLE_ADMIN" th:text="Administrador"></option>
+					 				<option th:value="ROLE_SUPER_ADMIN" >Super Administrador</option>
+					 			</select>  -->
+					 		
+					 		
+					 		<!-- <label class="col-sm-3 col-form-label">Rol(es)</label> -->
+					 			<div class="form-group row">
+					 			
+					 				<div class="col-sm-6">
+					 					<div th:each="rol: ${roles}" class="form-check form-check-inline">
+					 						<input type="checkbox" name="roles" id="roles" th:value="${rol}" class="form-check-input">
+					 						<label  th:text="${rol}" class="form-check-label"></label>
+					 				<!-- <div th:if="${#fields.hasErrors('roles')}" class="alert alert-danger" th:errors="*{roles}"></div> -->
+					 					</div>
+					 				</div>
+					 			</div>
+					 		
+					 		<div class="form-group">
+					 			<input type="submit" value="Guardar" class="btn btn-success">
+					 		</div>
+					 	
+					 </form>
+				</div>
+			</div>
+		</div>
+		
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

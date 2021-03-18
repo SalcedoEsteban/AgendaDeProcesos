@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	 <div class="container">
+	 	<div class="card bg-light">
+	 		<div class="card-header text-center" th:text="${titulo}"></div>
+	 		<div class="card-body">
+	 			<h4 class="card-title">
+	 				<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+					<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+	 				<a th:href="@{/especialidad/crear}" class="btn btn-success btn-xs">Crear Especialidad</a>
+	 			</h4>
+	 			<div th:if="${especialidades.isEmpty()}" class="alert alert-info my-4" th:text="'No hay especialidades creadas'"></div>
+	 			<table th:if="${!especialidades.isEmpty()}" class="table table-striped table-bordered">
+	 				<thead>
+	 					<tr>
+	 						<th>Id</th>
+	 						<th>Nombre</th>
+	 						<th>Editar</th>
+	 						<th>Eliminar</th>
+	 					</tr>
+	 				</thead>
+	 				<tbody>
+	 					<tr th:each="especialidad: ${especialidades}">
+	 						<td th:text="${especialidad.id}"></td>
+	 						<td th:text="${especialidad.nombre}"></td>
+	 						<td><a th:href="@{/especialidad/editar/} + ${especialidad.id}" class="btn btn-primary btn-xs">Editar</a></td>
+	 						<td><a th:href="@{/especialidad/eliminar/} + ${especialidad.id}" class="btn btn-danger btn-xs"
+	 						onclick="return confirm('¿Eliminar elemento?')">Eliminar</a></td>
+	 					</tr>
+	 				</tbody>
+	 			</table>
+	 		</div>
+	 	</div>
+	 </div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

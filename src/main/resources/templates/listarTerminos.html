@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container">
+		<div class="card bg-light">
+			<div class="card-header text-center" th:text="${titulo}"></div>
+			<div class="card-body">
+				<div class="card-title">
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+					<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+					<a th:href="@{/formTermino}" class="btn btn-success btn-xs">Crear Termino</a>
+				</div>
+				<div  th:if="${#lists.isEmpty(tipoProceso.terminos)}" class="alert alert-info my-4">No hay Terminos asignados para el proceso</div>
+				<table th:if="${not #lists.isEmpty(tipoProceso.terminos)}" class="table table-striped table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<!-- <th>Id</th> -->
+							<th>Nombre</th>
+							<th>Numero días</th>
+							<th>Basico</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="termino: ${tipoProceso.terminos}">
+							<!-- <td th:text="${termino.id}"></td>  -->
+							<!-- <td th:tex="${termino.tipoProceso}"></td>  -->
+							<td th:text="${termino.nombre}"></td>
+							<td th:text="${termino.numeroDias}"></td>
+							<td th:if="${termino.basico} == true" th:text="Sí"></td>
+							<td th:if="${termino.basico} == false" th:text="No"></td>
+							<td><a th:href="@{/editarTermino/} + ${termino.id}"
+								class="btn btn-primary btn-xs">Editar</a></td>
+							<td><a th:href="@{/eliminarTermino/} + ${termino.id}" 
+								class="btn btn-danger btn-xs" th:text="Eliminar"
+								onclick="return confirm('¿Eliminar elemento?')"></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

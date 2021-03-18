@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+				<h4 class="card-title">
+					<a th:href="@{/formPersona}" class="btn btn-primary btn-xs">Registrar
+						Persona</a>
+				</h4>
+				<table class="table table-striped table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th>Id</th>
+							<!-- <th>Identificacion</th> -->
+							<th>Nombre</th>
+							<th>Apellidos</th>
+							<th>Teléfono</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="persona: ${personas}">
+							<td th:text="${persona.id}"></td>
+							<!-- <td th:text="${persona.identificacion}"></td>  -->
+							<td th:text="${persona.nombre}"></td>
+							<td th:text="${persona.apellidos}"></td>
+							<td th:text="${persona.telefono}"></td>
+							<td><a th:href="@{/formPersona/} + ${persona.id}"
+								class="btn btn-primary btn-xs">Editar</a></td>
+							<td><a th:href="@{/eliminarPersona/} + ${persona.id}"
+								class="btn btn-danger btn-xs" id="botonEliminar"
+								onclick="return confirm('¿Eliminar elemento?')">Eliminar</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

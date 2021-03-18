@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+				<h4>
+					<a href="javascript: history.go(-1)" title="Volver a página anterior" class="btn btn-primary btn-xs" id="volver">
+						<img alt="" src="/icons/arrow-left.svg" width="20" height="20"></a>
+					<a sec:authorize="hasRole('ROLE_USER')" title="Volver al inicio" th:href="@{/}"
+						class="btn btn-success btn-xs"><img alt="" src="/icons/house.svg" width="20" height="20"></a>
+				</h4>
+				<form th:action="@{/guardarTermino}" th:object="${termino}"
+					method="post">
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label" th:text="'Termino para el Tipo Proceso:'"></label>
+						<div class="col-sm-4">
+							<input th:value="${termino.tipoProceso.nombre}" disabled="disabled" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Nombre</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{nombre}" class="form-control"
+								th:errorclass="'form-control alert-danger'"> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Número días</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{numeroDias}" class="form-control"
+								th:errorclass="'form-control alert-danger'"> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('numeroDias')}"
+								th:errors="*{numeroDias}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">¿Básico?</label>
+						<div class="col-sm-6">
+							<select th:field="*{basico}" class="form-control"
+								th:errorclass="'form-control alert-danger'">
+								<option th:value="'true'" th:text="Si"></option>
+								<option th:value="'false'" th:text="No"></option>
+							</select> <small class="form-text text-danger"
+								th:if="${#fields.hasErrors('basico')}" th:errors="*{basico}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Especialidad</label>
+						<div class="col-sm-6">
+							<select class="form-control" th:field="*{esp}"
+								th:errorclass="'form-control alert-danger'">
+								<option th:each="especialidad: ${especialidades}"
+									th:value="${especialidad.id}" th:text="${especialidad.nombre}"></option>
+							</select> <small class="form-text text-danger"
+								th:if="${#fields.hasErrors('especialidad')}"
+								th:errors="*{especialidad}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Tipo Proceso</label>
+						<div class="col-sm-6">
+							<select class="form-control" th:field="*{tipPro}">
+								<option th:each="tipoProceso : ${tiposProceso}"
+									th:value="${tipoProceso.id}" th:text="${tipoProceso.nombre}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Guardar" class="btn btn-success">
+					</div>
+					<input type="hidden" th:field="*{id}">
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

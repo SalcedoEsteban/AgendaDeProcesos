@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<div class="alert alert-success" th:if="${success != null}"
+		th:text="${success}"></div>
+	<div class="alert alert-danger" th:if="${error != null}"
+		th:text="${error}"></div>
+	<div class="alert alert-warning" th:if="${warning != null}"
+		th:text="${warning}"></div>
+	<div class="alert alert-info" th:if="${info != null}" th:text="${info}">
+		<h2></h2>
+	</div>
+	<div class="container py-4">
+		<div class="card bg-light text-center">
+			<div class="card-header">
+				<h1>Agenda de Procesos</h1>
+			</div>
+			<div class="card-body">
+
+				<th:block th:switch="${numeroRoles}">
+					<div th:case="'1'">
+						<a th:href="@{/listarProcesos}" class="btn btn-primary btn-lg">Tablero
+						de Control</a>
+						<!-- <a th:href="@{/formProceso}" class="btn btn-success btn-lg">Crear Proceso</a> -->
+						<a th:href="@{/verProcesosAAdmitir}" class="btn btn-info btn-lg">Procesos
+						por admitir</a>
+						<a th:href="@{/verProcesosASubsanarDemanda}" class="btn btn-info btn-lg">Procesos
+						por subsanar</a>
+						<a th:href="@{/verProcesosPrioritarios}" class="btn btn-info btn-lg">Procesos
+						prioritarios</a>
+						<!-- <a th:href="@{/verProcesos}" class="btn btn-warning btn-lg">Ver Todos los Procesos</a> -->
+					</div>
+					<div th:case="'2'">
+						<a th:href="@{/listarProcesos}" class="btn btn-primary btn-lg">Tablero
+						de Control</a>
+						<a th:href="@{/formProceso}" class="btn btn-success btn-lg">Crear Proceso</a>
+						<a th:href="@{/verProcesosAAdmitir}" class="btn btn-info btn-lg">Procesos
+						por admitir</a>
+						<a th:href="@{/verProcesosASubsanarDemanda}" class="btn btn-info btn-lg">Procesos
+						por subsanar</a>
+						<a th:href="@{/verProcesosPrioritarios}" class="btn btn-info btn-lg">Procesos
+						prioritarios</a>
+						<a th:href="@{/verProcesos}" class="btn btn-warning btn-lg">Ver Todos los Procesos</a>
+					</div>
+					<div th:case="'3'">
+						<a th:href="@{/listarTiposProceso}" class="btn btn-primary btn-lg">Admin. Tipo Proceso</a>
+						<a th:href="@{/formTermino}" class="btn btn-success btn-lg">Crear Terminos</a>
+						<a th:href="@{/listarUsuarios}" class="btn btn-info btn-lg">Admin. Usuarios</a>
+						<a th:href="@{/juzgado/verEspecialidad}" class="btn btn-warning btn-lg">Admin. Juzgados</a>
+						<a th:href="@{/especialidad/listar}" class="btn btn-warning btn-lg">Admin. Especialidades</a>
+					</div>
+				</th:block>
+				<!-- <a th:href="@{/listarProcesos}" class="btn btn-primary btn-lg">Tablero
+					de Control</a> <a th:href="@{/formProceso}"
+					class="btn btn-success btn-lg">Crear Proceso</a> <a
+					th:href="@{/verProcesosPrioritarios}" class="btn btn-info btn-lg">Procesos
+					prioritarios</a> <a th:href="@{/verProcesos}"
+					class="btn btn-warning btn-lg">Ver Todos los Procesos</a>  -->
+			</div>
+		</div>
+	</div>
+	<!-- <footer th:replace="layout/layout :: footer"></footer>  -->
+</body>
+</html>
